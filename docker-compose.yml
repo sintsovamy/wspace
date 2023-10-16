@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  proxy:
+    build: ./ws_nginx
+    ports:
+      - ${WEB_PORT:-80}:80
+    volumes:
+      - ./ws_nginx/ws_nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+      - nginx-html:/var/www/html
+    depends_on:
+      - php
+      - db
+    networks:
+      - wspace-network
+
+  db:
+    image: postgres:alpine3.17
+    ports:
+      - ${DB_PORT:-5432}:5432
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-postgres}
+      POSTGRES_USER: ${DB_USERNAME:-root}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+    networks:
+      - wspace-network
+    
+  dbms:
+    image: adminer:4.8.1
+    ports:
+      - ${ADMINER_PORT:-8080}:8080
+    depends_on:
+      - db
+    networks:
+      - wspace-network
+
+  php:
+    image: php:8.1-fpm
+    volumes:
+      - ./php-code:/var/www/html
+    networks:
+      - wspace-network
+
+volumes:
+  nginx-html:
+  postgres_db:
+
+networks:
+  wspace-network:
+
