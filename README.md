@@ -1,2 +1,2 @@
 1. Клонировать проект
-2. Запустить docker compose up --build
+2. Запустить командой docker compose up --build
