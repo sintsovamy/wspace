@@ -6,7 +6,7 @@ services:
     ports:
       - ${WEB_PORT:-80}:80
     volumes:
-      - ./ws_nginx/ws_nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+      - ./ws_nginx/ws_nginx.conf.dev:/etc/nginx/conf.d/nginx.conf
       - ../project:/var/www/
     depends_on:
       - php
@@ -28,7 +28,7 @@ services:
       - wspace-network
 
   php:
-    image: php:8.1-fpm
+    build: ./php
     volumes:
       - ../project:/var/www/
     networks:
