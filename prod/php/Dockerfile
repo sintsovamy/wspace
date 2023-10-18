@@ -6,6 +6,6 @@ ADD  ./prod/php/php.ini /usr/local/etc/php/conf.d/40-custom.ini
 
 COPY ./project /var/www/
 
-WORKDIR /var/www/html
+WORKDIR /var/www/
 
 CMD ["php-fpm"]
