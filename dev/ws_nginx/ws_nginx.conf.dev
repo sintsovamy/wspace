@@ -1,6 +1,6 @@
 server {
 	listen 80;
-	server_name wspace.local;
+	server_name ${SERVER_NAME};
    	index index.php;
     	root /var/www/test;
 
