@@ -1,12 +1,12 @@
 server {
 	listen 80;
-	server_name 127.0.0.1;
+	server_name wspace.local;
    	index index.php;
     	root /var/www/test;
 
-	location /adminer {
-	proxy_pass http://adminer:8080;
-	rewrite ^/adminer/(.*) /$1 break;
+	location /adminer/ {
+	proxy_pass http://dbms:8080;
+	}
 
 	location ~ \.php$ {
         try_files $uri =404;
