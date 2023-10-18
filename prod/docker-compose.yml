@@ -5,10 +5,8 @@ services:
     build: ./ws_nginx
     ports:
       - ${WEB_PORT:-80}:80
-    volumes:
-      - ./ws_nginx/ws_nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
+    volumes: 
       - ../project:/var/www/
-
     depends_on:
       - php
       - db
@@ -36,7 +34,6 @@ services:
       - wspace-network
 
 volumes:
-  nginx-html:
   postgres_db:
 
 networks:
