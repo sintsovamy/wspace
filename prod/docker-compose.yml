@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  proxy:
+    build:
+      context: ../
+      dockerfile: ./prod/ws_nginx/Dockerfile
+    ports:
+      - ${WEB_PORT:-80}:80
+    depends_on:
+      - php
+      - db
+    networks:
+      - wspace-network
+
+  db:
+    image: postgres:alpine3.17
+    ports:
+      - ${DB_PORT:-5432}:5432
+    environment:
+      POSTGRES_DB: ${DB_DATABASE:-postgres}
+      POSTGRES_USER: ${DB_USERNAME:-root}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+    volumes:
+      - postgres_db:/var/lib/postgresql/data
+    networks:
+      - wspace-network
+    
+  php:
+    build: 
+      context: ../
+      dockerfile: ./prod/php/Dockerfile
+
+    networks:
+      - wspace-network
+
+volumes:
+  postgres_db:
+
+networks:
+  wspace-network:
+

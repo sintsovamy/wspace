@@ -6,8 +6,8 @@ services:
     ports:
       - ${WEB_PORT:-80}:80
     volumes:
-      - ./ws_nginx/ws_nginx.conf.prod:/etc/nginx/conf.d/nginx.conf
-      - nginx-html:/var/www/html
+      - ./ws_nginx/ws_nginx.conf.dev:/etc/nginx/conf.d/nginx.conf
+      - ../project:/var/www/
     depends_on:
       - php
       - db
@@ -26,22 +26,21 @@ services:
       - postgres_db:/var/lib/postgresql/data
     networks:
       - wspace-network
-    
+
+  php:
+    build: ./php
+    volumes:
+      - ../project:/var/www/
+    networks:
+      - wspace-network
+
   dbms:
     image: adminer:4.8.1
-    ports:
-      - ${ADMINER_PORT:-8080}:8080
     depends_on:
       - db
     networks:
       - wspace-network
 
-  php:
-    image: php:8.1-fpm
-    volumes:
-      - ./php-code:/var/www/html
-    networks:
-      - wspace-network
 
 volumes:
   nginx-html:
